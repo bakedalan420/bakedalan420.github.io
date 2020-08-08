@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="I get baked here, yo.">
+    <meta name="author" content="Alan Baker">
+    <meta name="theme-color" content="#161616">
+
+    <title>Alan Baker</title>
+
+    <!-- Bootstrap and page CSS -->
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Content invisible -->
+    <script>
+        document.body.classList.add('fadeout');
+    </script>
+
+    <main role="main">
+        <div class="container" style="padding-top: 10px;">
+            <h1 class="banner-name">Alan Baker</h1>
+
+            <br>
+
+            <a href="projects/gimme_dat_sauce">
+                <div class="main-card">
+                    <h3 class="body-header">Gimme Dat Sauce</h3>
+                    
+                    <p>
+                        Very mobile-friendly...
+                    </p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <script src="scripts/popper.min.js"></script>
+    <script src="scripts/jquery-3.3.1.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/parallax/parallax.min.js"></script>
+
+    <!-- Fade done -->
+    <script>
+        // Fade in page after done loading.
+        window.onload = function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            document.body.classList.remove('fadeout');
+        };
+    </script>
+</body>
+
+</html>
