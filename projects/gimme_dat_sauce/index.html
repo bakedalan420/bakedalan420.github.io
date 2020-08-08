@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Get that sauce">
+    <meta name="author" content="Alan Baker">
+    <meta name="theme-color" content="#161616">
+
+    <title>Gimme Dat Sauce</title>
+
+    <!-- Bootstrap and page CSS -->
+    <link href="../../styles/bootstrap.min.css" rel="stylesheet">
+    <link href="../../styles/animate.min.css" rel="stylesheet">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="styles/gimme_dat_sauce.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Content invisible -->
+    <script>
+        document.body.classList.add('fadeout');
+    </script>
+
+    <!-- Client connection form -->
+    <div id="sauceForm" class="mx-auto">
+        <div class="row" style="margin-left: 8px; margin-right: 8px; margin-top: 8px;">
+                <a href="../.." type="button" class="btn btn-secondary"
+                    style="width:150px;background-color:#00000000">Back to Home</button>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-10 col-lg-9 center-screen" style="text-align: center;">            
+            <div class="main-form">                
+                <div class="form-group">
+                    <input id="sauceInput" class="form-control" style="margin-bottom: 10px; text-align: center;" type="text" maxlength="8" placeholder="Sauce">
+                    <div style="margin-bottom: 20px;"></div>
+                </div>
+                
+                <div class="row" style="margin-left:0px;margin-right:0px;">
+                    <button id="loadBtn" type="button" class="btn btn-secondary col" style="background-color:#d41e1e">
+                        Load
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="sauceView" style="display: none;">
+        <div class="row mx-auto" style="margin-top: 10px; margin-bottom: 10px;">
+            <button id="menuBtn" type="button" class="btn btn-secondary" style="background-color:#d41e1e">Return to Menu</button>
+        </div>
+
+        <div id="sauceContents"></div>
+    </div>
+
+    <script src="../../scripts/popper.min.js"></script>
+    <script src="../../scripts/jquery-3.3.1.min.js"></script>
+    <script src="../../scripts/bootstrap.min.js"></script>
+    <script src="../../scripts/jquery.mask.min.js"></script>
+    <script src="../../scripts/main.js"></script>
+    <script src="scripts/gimme_dat_sauce.js"></script>
+    
+    <!-- Fade done -->
+    <script>
+        // Fade in page after done loading.
+        window.onload = function () {
+            // Fade in webpage.
+            document.body.classList.remove('fadeout');
+        };
+    </script>
+</body>
+
+</html>
