@@ -75,7 +75,7 @@ function loadSauce() {
             for (let i = 0; i < pageCount; i++) {
                 let page = i + 1;
                 let targetURL = encodeURIComponent(`https://i.nhentai.net/galleries/${gallerySauce}/${page}.jpg`);
-                htmlBuild += `<img src=\"http://35.211.180.69/?url=${targetURL}\" style=\"width:100%;\">`;
+                htmlBuild += `<img src=\"http://35.211.180.69/?url=${targetURL}&maxRes=1920&quality=70\" style=\"width:100%;\">`;
             }
 
             $('#sauceContents').html(htmlBuild);
