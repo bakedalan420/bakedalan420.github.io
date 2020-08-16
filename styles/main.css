@@ -94,15 +94,15 @@ body.fadeout {
 	font-size: 64px;
 	background-color: #101010;
 	border-color: #252c4e;
-	color: #afafaf;
+	color: #cfcfcf;
 }
 .form-control:focus {
 	background-color: #121212;
 	border-color: #2c335f;
-	color: #afafaf;
+	color: #cfcfcf;
 }
 .form-control::placeholder {
-	color: #afafaf20;
+	color: #afafaf40;
 }
 
 a {

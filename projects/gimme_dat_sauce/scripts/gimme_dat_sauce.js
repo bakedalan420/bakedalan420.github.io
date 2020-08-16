@@ -1,7 +1,6 @@
 // Constants.
 const ENTER_KEY = 13;
-const GALLERY_SEARCH_PATTERN = '.net/galleries/';
-const PAGE_COUNT_SEARCH_PATTERN = 'num_pages\\u0022:';
+const JSON_SEARCH_PATTERN = 'window._gallery = JSON.parse(\"';
 
 // Member variables.
 var loaded = false;
@@ -29,12 +28,24 @@ $(document).on('keydown', (event) => {
     }
 });
 
+function getImageExtension(type) {
+    switch(type) {
+        case 'j':
+            return '.jpg';
+        case 'p':
+            return '.png';
+        case 'g':
+            return '.gif';
+    }
+
+    console.log(`Cannot parse type ${type}`);
+    return '';
+}
+
 function loadSauce() {
     $('#loadBtn').attr('disabled', true);
     loaded = true;
     sauce = $('#sauceInput').val();
-
-    updateTabName();
 
     // Fade out sauce form and fade in sauce.
     animateCSS('#sauceForm', 'fadeOut', function() {
@@ -47,39 +58,48 @@ function loadSauce() {
 
     $.getJSON('https://api.allorigins.win/get?url=' + encodeURIComponent(sauceLink), function (data) {
         if (data.status.http_code != 200) {
-            alert("Status code: " + data.status.http_code);
+            alert(`Status code: ${data.status.http_code}`);
             return;
         }
 
+        // Extract API JSON from HTML source.
         str = data.contents;
-        let start = str.indexOf(GALLERY_SEARCH_PATTERN) + GALLERY_SEARCH_PATTERN.length;
-        let end = str.indexOf('/', start);
+        let jsonDataStart = str.indexOf(JSON_SEARCH_PATTERN) + JSON_SEARCH_PATTERN.length;
+        let jsonDataEnd = str.indexOf('\");', jsonDataStart);
 
-        if (end > start && end > -1) {
-            // Parse gallery number.
-            gallerySauce = str.substring(start, end);
-            console.log(gallerySauce);
-
-            // Parse page count.
-            let pageCountStart = str.lastIndexOf(PAGE_COUNT_SEARCH_PATTERN) + PAGE_COUNT_SEARCH_PATTERN.length;
-            let pageCount = 0;
-
-            if (pageCountStart > PAGE_COUNT_SEARCH_PATTERN.length) {
-                let pageCountEnd = str.indexOf(',', pageCountStart);
-                pageCount = parseInt(str.substring(pageCountStart, pageCountEnd));
-            }
-
-            let htmlBuild = '<p><a href="' + sauceLink + '">Direct Sauce Link</a></p>';
-            htmlBuild += '<p>Page Count: ' + pageCount + '</p>';
-
-            for (let i = 0; i < pageCount; i++) {
-                let page = i + 1;
-                let targetURL = encodeURIComponent(`https://i.nhentai.net/galleries/${gallerySauce}/${page}.jpg`);
-                htmlBuild += `<img src=\"http://35.211.180.69/?url=${targetURL}&maxRes=1920&quality=70\" style=\"width:100%;\">`;
-            }
-
-            $('#sauceContents').html(htmlBuild);
+        if (jsonDataStart === -1 || jsonDataEnd === -1 || jsonDataStart >= jsonDataEnd)
+        {
+            alert('Failed to parse JSON');
+            return;
         }
+
+        str = str.substring(jsonDataStart, jsonDataEnd);
+
+        // Unescape unicode.
+        let regex = /\\u([\d\w]{4})/gi;
+
+        str = str.replace(regex, function (match, group) {
+            return String.fromCharCode(parseInt(group, 16));
+        });
+
+        let apiJson = JSON.parse(str);
+        gallerySauce = apiJson.media_id;
+        let pageCount = apiJson.num_pages;
+
+        let htmlBuild = `<p><a href=\"${sauceLink}\">Direct Sauce Link</a></p>`;
+        htmlBuild += `<p>Title: ${apiJson.title.english}</p>`;
+        htmlBuild += `<p>Page Count: ${pageCount}</p>`;
+
+        for (let i = 0; i < pageCount; i++) {
+            let pageData = apiJson.images.pages[i];
+            let pageNum = i + 1;
+
+            let targetURL = `https://i.nhentai.net/galleries/${gallerySauce}/${pageNum}${getImageExtension(pageData.t)}`;
+            targetURL = encodeURIComponent(targetURL);
+            htmlBuild += `<img src=\"http://35.211.180.69/?url=${targetURL}&maxRes=1920&quality=70\" style=\"width:100%;\">`;
+        }
+
+        $('#sauceContents').html(htmlBuild);
     });
 }
 
@@ -95,13 +115,5 @@ function unloadSauce() {
         });
 
         loaded = false;
-        updateTabName();
     }
-}
-
-function updateTabName() {
-    if (loaded)
-        document.title = sauce + ' | Gimme Dat Sauce';
-    else
-        document.title = 'Gimme Dat Sauce';
 }
