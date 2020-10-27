@@ -96,7 +96,7 @@ function loadSauce() {
 
             let targetURL = `https://i.nhentai.net/galleries/${gallerySauce}/${pageNum}${getImageExtension(pageData.t)}`;
             targetURL = encodeURIComponent(targetURL);
-            htmlBuild += `<img src=\"http://35.211.180.69/?url=${targetURL}&maxRes=1920&quality=70&enforceJPEG\" style=\"width:100%;\">`;
+            htmlBuild += `<img src=\"http://34.86.126.25/?url=${targetURL}&maxRes=1920&quality=70&enforceJPEG\" style=\"width:100%;\">`;
         }
 
         $('#sauceContents').html(htmlBuild);
